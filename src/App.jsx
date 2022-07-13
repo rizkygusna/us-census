@@ -4,8 +4,16 @@ import LineChart from './components/LineChart';
 
 function App() {
   const [source, setSource] = useState({ name: '', desc: '' });
-  const [labels, setLabels] = useState([]);
-  const [populations, setPopulations] = useState([]);
+  const [populationData, setPopulationData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'US Population',
+        data: [],
+        borderColor: '#2B6CB0',
+      },
+    ],
+  });
 
   const fetchData = async () => {
     try {
@@ -20,11 +28,18 @@ function App() {
       setSource(newSource);
 
       const dataArray = resObj.data;
+      dataArray.sort((a, b) => a.Year - b.Year);
       const newLabels = dataArray.map((item) => item.Year);
-      setLabels(newLabels);
-
       const newPopulations = dataArray.map((item) => item.Population);
-      setPopulations(newPopulations);
+      setPopulationData({
+        labels: newLabels,
+        datasets: [
+          {
+            label: 'US Population',
+            data: newPopulations,
+          },
+        ],
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -47,7 +62,7 @@ function App() {
         {source.name === '' ? 'Test' : source.name}
       </Heading>
       <Text marginBottom={4}>{source.desc}</Text>
-      {/* <LineChart labels={labels} data={populations}></LineChart> */}
+      <LineChart marginBottom={4} chartData={populationData}></LineChart>
     </Box>
   );
 }
