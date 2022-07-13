@@ -1,20 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Box, Text, Heading } from '@chakra-ui/react';
+import LineChart from './components/LineChart';
 
 function App() {
   const [source, setSource] = useState({ name: '', desc: '' });
+  const [labels, setLabels] = useState([]);
+  const [populations, setPopulations] = useState([]);
 
   const fetchData = async () => {
     try {
       const res = await fetch(
         'https://datausa.io/api/data?drilldowns=Nation&measures=Population'
       );
-      const data = await res.json();
+      const resObj = await res.json();
       const newSource = {
-        name: data.source[0].annotations.source_name,
-        desc: data.source[0].annotations.source_description,
+        name: resObj.source[0].annotations.source_name,
+        desc: resObj.source[0].annotations.source_description,
       };
       setSource(newSource);
+
+      const dataArray = resObj.data;
+      const newLabels = dataArray.map((item) => item.Year);
+      setLabels(newLabels);
+
+      const newPopulations = dataArray.map((item) => item.Population);
+      setPopulations(newPopulations);
     } catch (error) {
       console.log(error.message);
     }
@@ -36,7 +46,8 @@ function App() {
       <Heading marginBottom={4}>
         {source.name === '' ? 'Test' : source.name}
       </Heading>
-      <Text>{source.desc}</Text>
+      <Text marginBottom={4}>{source.desc}</Text>
+      {/* <LineChart labels={labels} data={populations}></LineChart> */}
     </Box>
   );
 }
