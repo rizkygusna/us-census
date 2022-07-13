@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Box, Text, Heading } from '@chakra-ui/react';
+import { Box, Text, Heading, VStack } from '@chakra-ui/react';
 import LineChart from './components/LineChart';
+import PieChart from './components/PieChart';
 
 function App() {
   const [source, setSource] = useState({ name: '', desc: '' });
@@ -10,7 +11,16 @@ function App() {
       {
         label: 'US Population',
         data: [],
-        borderColor: '#2B6CB0',
+        borderColor: '#000',
+        backgroundColor: [
+          '#F56565',
+          '#ED8936',
+          '#ECC94B',
+          '#48BB78',
+          '#38B2AC',
+          '#4299E1',
+          '#9F7AEA',
+        ],
       },
     ],
   });
@@ -58,11 +68,14 @@ function App() {
       paddingX={{ base: 4 }}
       paddingY={{ base: 4 }}
     >
-      <Heading marginBottom={4}>
+      <Heading marginBottom={4} color='blue.500'>
         {source.name === '' ? 'Test' : source.name}
       </Heading>
       <Text marginBottom={4}>{source.desc}</Text>
-      <LineChart marginBottom={4} chartData={populationData}></LineChart>
+      <VStack spacing={16}>
+        <LineChart chartData={populationData} />
+        <PieChart chartData={populationData} />
+      </VStack>
     </Box>
   );
 }
