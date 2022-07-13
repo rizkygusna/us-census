@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Text, Heading, VStack } from '@chakra-ui/react';
 import LineChart from './components/LineChart';
 import PieChart from './components/PieChart';
+import { YearRangePicker } from 'react-year-range-picker';
 
 function App() {
   const [source, setSource] = useState({ name: '', desc: '' });
@@ -72,6 +73,11 @@ function App() {
         {source.name === '' ? 'Test' : source.name}
       </Heading>
       <Text marginBottom={4}>{source.desc}</Text>
+      <YearRangePicker
+        minYear={2013}
+        maxYear={2019}
+        spacer='-'
+      ></YearRangePicker>
       <VStack spacing={16}>
         <LineChart chartData={populationData} />
         <PieChart chartData={populationData} />
